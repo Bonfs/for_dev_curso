@@ -8,9 +8,11 @@ import 'package:for_dev_curso/data/http/http.dart';
 import 'package:for_dev_curso/domain/helpers/helpers.dart';
 import 'package:for_dev_curso/domain/usecases/usecases.dart';
 
-class HttpClientSpy extends Mock implements HttpClient {}
+import 'remote_authentication_test.mocks.dart';
 
-@GenerateMocks([HttpClient])
+// class HttpClientSpy extends Mock implements HttpClient {}
+
+@GenerateMocks([], customMocks: [MockSpec<HttpClient>(as: #HttpClientSpy)])
 void main() {
   late RemoteAuthentication sut;
   late HttpClientSpy httpClient;
