@@ -2,34 +2,10 @@ import 'package:faker/faker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
 
-import 'package:for_dev_curso/domain/usecases/authentication.dart';
-class RemoteAuthentication {
-  final HttpClient httpClient;
-  final String url;
-
-  Future<void> auth(AuthenticationParams params) async {
-    final body = {
-      'email': params.email,
-      'password': params.password 
-    };
-    await httpClient.request(url: url, method: 'post', body: body);
-  }
-
-  RemoteAuthentication({
-    required this.httpClient,
-    required this.url
-  });
-}
-
-abstract class HttpClient {
-  Future<void>? request({
-    required String url,
-    required String method,
-    Map body
-  });
-}
+import 'package:for_dev_curso/data/usecases/usecases.dart';
+import 'package:for_dev_curso/data/http/http.dart';
+import 'package:for_dev_curso/domain/usecases/usecases.dart';
 
 class HttpClientSpy extends Mock implements HttpClient {}
 
@@ -53,10 +29,7 @@ void main() {
     verify(httpClient.request(
       url: url,
       method: 'post',
-      body: {
-        'email': params.email,
-        'password': params.password 
-      }
+      body: params.toJson()
     ));
   });
 }
