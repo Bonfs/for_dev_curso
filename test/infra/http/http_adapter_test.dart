@@ -58,7 +58,20 @@ void main() {
           'accept': 'application/json'
         },
         body: {'any_key': 'any_value'},
-        encoding: null
+        encoding: anyNamed('encoding')
+      ));
+    });
+
+    test('Should call post without body', () async {
+      when(client.post(Uri.parse(url), body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')))
+        .thenAnswer((_) => Future.value(Response('', 200)));
+
+      await sut.request(url: url, method: 'post');
+
+      verify(client.post(
+        any,
+        headers: anyNamed('headers'),
+        encoding: anyNamed('encoding')
       ));
     });
   });
