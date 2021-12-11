@@ -26,7 +26,7 @@ class HttpAdapter {
     };
     await client.post(
       Uri.parse(url), 
-      body: null, 
+      body: body, 
       headers: headers, 
       encoding: null
     );
@@ -48,15 +48,16 @@ void main() {
     test('Should call post with correct values', () async {
       when(client.post(Uri.parse(url), body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')))
         .thenAnswer((_) => Future.value(Response('', 200)));
-      await sut.request(url: url, method: 'post');
+
+      await sut.request(url: url, method: 'post', body: {'any_key': 'any_value'});
 
       verify(client.post(
         Uri.parse(url), 
-        body: null, 
         headers: {
           'content-type': 'application/json',
           'accept': 'application/json'
-        }, 
+        },
+        body: {'any_key': 'any_value'},
         encoding: null
       ));
     });
