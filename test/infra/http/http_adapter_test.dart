@@ -20,7 +20,16 @@ class HttpAdapter {
     required String method,
     Map? body
   }) async {
-    await client.post(Uri.parse(url), body: null, headers: null, encoding: null);
+    final headers = {
+      'content-type': 'application/json',
+      'accept': 'application/json'
+    };
+    await client.post(
+      Uri.parse(url), 
+      body: null, 
+      headers: headers, 
+      encoding: null
+    );
   }
 }
 
@@ -36,7 +45,15 @@ void main() {
         .thenAnswer((_) => Future.value(Response('', 200)));
       await sut.request(url: url, method: 'post');
 
-      verify(client.post(Uri.parse(url), body: null, headers: null, encoding: null));
+      verify(client.post(
+        Uri.parse(url), 
+        body: null, 
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json'
+        }, 
+        encoding: null
+      ));
     });
   });
 }
