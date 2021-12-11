@@ -35,12 +35,17 @@ class HttpAdapter {
 
 @GenerateMocks([], customMocks: [MockSpec<Client>(as: #ClientSpy)])
 void main() {
+  late final ClientSpy client;
+  late final HttpAdapter sut;
+  late final String url;
+
+  setUp(() {
+    client = ClientSpy();
+    sut = HttpAdapter(client);
+    url = faker.internet.httpUrl();
+  });
   group('post', () {
     test('Should call post with correct values', () async {
-      final client = ClientSpy();
-      final sut = HttpAdapter(client);
-      final url = faker.internet.httpUrl();
-
       when(client.post(Uri.parse(url), body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')))
         .thenAnswer((_) => Future.value(Response('', 200)));
       await sut.request(url: url, method: 'post');
