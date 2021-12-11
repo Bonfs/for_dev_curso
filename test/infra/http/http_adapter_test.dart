@@ -35,9 +35,9 @@ class HttpAdapter {
 
 @GenerateMocks([], customMocks: [MockSpec<Client>(as: #ClientSpy)])
 void main() {
-  late final ClientSpy client;
-  late final HttpAdapter sut;
-  late final String url;
+  late ClientSpy client;
+  late HttpAdapter sut;
+  late String url;
 
   setUp(() {
     client = ClientSpy();
