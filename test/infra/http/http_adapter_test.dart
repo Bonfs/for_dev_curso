@@ -22,24 +22,24 @@ void main() {
     url = faker.internet.httpUrl();
   });
 
-  group('shared', () {
-    test('Should ServerError if invalid method is provided', () async {
-      when(client.post(any, body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')))
-        .thenAnswer((_) async => Response('', 500));
+  PostExpectation mockRequest() =>
+    when(client.post(any, body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')));
 
+  void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) {
+    mockRequest().thenAnswer((_) async => Response(body, statusCode));
+  }
+
+  group('shared', () {
+    setUp(() {
+      mockResponse(500);
+    });
+    test('Should ServerError if invalid method is provided', () async {
       final future =  sut.request(url: url, method: 'invalid_method');
 
       expect(future, throwsA(HttpError.serverError));
     });
   });
   group('post', () {
-    PostExpectation mockRequest() =>
-      when(client.post(any, body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')));
-
-    void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) {
-      mockRequest().thenAnswer((_) async => Response(body, statusCode));
-    }
-
     setUp(() {
       mockResponse(200);
     });
