@@ -15,7 +15,7 @@ class HttpAdapter {
 
   HttpAdapter(this.client);
 
-  Future<void>? request({
+  Future<Map?> request({
     required String url,
     required String method,
     Map? body
@@ -24,12 +24,19 @@ class HttpAdapter {
       'content-type': 'application/json',
       'accept': 'application/json'
     };
-    await client.post(
+    
+    final response = await client.post(
       Uri.parse(url), 
       body: body, 
       headers: headers, 
       encoding: null
     );
+
+    if(response.statusCode == 200) {
+      return response.body.isEmpty ? null : jsonDecode(response.body);
+    } else {
+      return null;
+    }
   }
 }
 
@@ -45,10 +52,18 @@ void main() {
     url = faker.internet.httpUrl();
   });
   group('post', () {
-    test('Should call post with correct values', () async {
-      when(client.post(Uri.parse(url), body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')))
-        .thenAnswer((_) => Future.value(Response('', 200)));
+    PostExpectation mockRequest() =>
+      when(client.post(any, body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')));
 
+    void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) {
+      mockRequest().thenAnswer((_) async => Response(body, statusCode));
+    }
+
+    setUp(() {
+      mockResponse(200);
+    });
+
+    test('Should call post with correct values', () async {
       await sut.request(url: url, method: 'post', body: {'any_key': 'any_value'});
 
       verify(client.post(
@@ -63,9 +78,6 @@ void main() {
     });
 
     test('Should call post without body', () async {
-      when(client.post(Uri.parse(url), body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')))
-        .thenAnswer((_) => Future.value(Response('', 200)));
-
       await sut.request(url: url, method: 'post');
 
       verify(client.post(
@@ -73,6 +85,12 @@ void main() {
         headers: anyNamed('headers'),
         encoding: anyNamed('encoding')
       ));
+    });
+
+    test('Should return data if post returns 200', () async {
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, {'any_key': 'any_value'});
     });
   });
 }
