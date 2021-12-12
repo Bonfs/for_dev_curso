@@ -21,13 +21,18 @@ class HttpAdapter implements HttpClient {
     };
     
     var response = Response('', 500);
-    if(method == 'post') {
-      response = await client.post(
-        Uri.parse(url), 
-        body: body, 
-        headers: headers, 
-        encoding: null
-      );
+
+    try {
+      if(method == 'post') {
+        response = await client.post(
+          Uri.parse(url), 
+          body: body, 
+          headers: headers, 
+          encoding: null
+        );
+      }
+    } catch(err) {
+      throw HttpError.serverError;
     }
 
     return _handleResponse(response);
