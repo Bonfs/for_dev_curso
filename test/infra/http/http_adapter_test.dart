@@ -21,6 +21,17 @@ void main() {
     sut = HttpAdapter(client);
     url = faker.internet.httpUrl();
   });
+
+  group('shared', () {
+    test('Should ServerError if invalid method is provided', () async {
+      when(client.post(any, body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')))
+        .thenAnswer((_) async => Response('', 500));
+
+      final future =  sut.request(url: url, method: 'invalid_method');
+
+      expect(future, throwsA(HttpError.serverError));
+    });
+  });
   group('post', () {
     PostExpectation mockRequest() =>
       when(client.post(any, body: anyNamed('body'), headers: anyNamed('headers'), encoding: anyNamed('encoding')));
