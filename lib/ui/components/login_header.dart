@@ -14,7 +14,7 @@ class LoginHeader extends StatelessWidget {
             Theme.of(context).primaryColorLight,
             Theme.of(context).primaryColorDark,
           ]
-        ),
+        ), 
         boxShadow: const [
           BoxShadow(
             offset: Offset(0, 0),
