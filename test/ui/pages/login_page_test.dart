@@ -16,17 +16,21 @@ import 'login_page_test.mocks.dart';
 void main() {
   late LoginPresenter presenter;
   late StreamController<String> emailErrorController;
+  late StreamController<String> passwordErrorController;
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = LoginPresenterSpy();
     emailErrorController = StreamController();
+    passwordErrorController = StreamController();
     when(presenter.emailErrorStream).thenAnswer((_) => emailErrorController.stream);
+    when(presenter.passwordErrorStream).thenAnswer((_) => passwordErrorController.stream);
     final loginPage = MaterialApp(home: LoginPage(presenter));
     await tester.pumpWidget(loginPage);
   }
 
   tearDown(() {
     emailErrorController.close();
+    passwordErrorController.close();
   });
 
   testWidgets('Should load with correct initial state', (WidgetTester tester) async {
@@ -78,22 +82,6 @@ void main() {
     expect(find.text('any_error'), findsOneWidget);
   });
 
-  // testWidgets('Should present no error if email is valid', (WidgetTester tester) async {
-  //   await loadPage(tester);
-    
-  //   emailErrorController.add(null);
-  //   await tester.pump();
-
-  //   final emailTextChildren = find.descendant(
-  //     of: find.bySemanticsLabel('Email'),
-  //     matching: find.byType(Text)
-  //   );
-  //   expect(
-  //     emailTextChildren, 
-  //     findsOneWidget
-  //   );
-  // });
-
   testWidgets('Should present no error if email is valid', (WidgetTester tester) async {
     await loadPage(tester);
     
@@ -108,5 +96,14 @@ void main() {
       emailTextChildren, 
       findsOneWidget
     );
+  });
+
+  testWidgets('Should present error if password is invalid', (WidgetTester tester) async {
+    await loadPage(tester);
+    
+    passwordErrorController.add('any_error');
+    await tester.pump();
+
+    expect(find.text('any_error'), findsOneWidget);
   });
 }
