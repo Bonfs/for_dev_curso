@@ -106,4 +106,20 @@ void main() {
 
     expect(find.text('any_error'), findsOneWidget);
   });
+
+  testWidgets('Should present no error if password is valid', (WidgetTester tester) async {
+    await loadPage(tester);
+    
+    emailErrorController.add('');
+    await tester.pump();
+
+    final emailTextChildren = find.descendant(
+      of: find.bySemanticsLabel('Senha'),
+      matching: find.byType(Text)
+    );
+    expect(
+      emailTextChildren, 
+      findsOneWidget
+    );
+  });
 }
