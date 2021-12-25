@@ -72,15 +72,7 @@ class LoginContent extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 8, bottom: 32),
                       child: PasswordInput(),
                     ),
-                    StreamBuilder<bool>(
-                      stream: presenter.isFormValidStream,
-                      builder: (context, snapshot) {
-                        return ElevatedButton(
-                          onPressed: snapshot.data == true ? presenter.auth : null,
-                          child: Text('Entrar'.toUpperCase()),
-                        );
-                      }
-                    ),
+                    LoginButton(),
                     TextButton.icon(
                       onPressed: () {},
                       label: const Text('Criar conta'),
@@ -96,3 +88,5 @@ class LoginContent extends StatelessWidget {
     );
   }
 }
+
+
