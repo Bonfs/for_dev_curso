@@ -62,70 +62,81 @@ class _LoginPageState extends State<LoginPage> {
             }
           });
 
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                LoginHeader(),
-                const Headline1(text: 'Login'),
-                Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Form(
-                    child: Column(
-                      children: [
-                        StreamBuilder<String>(
-                          stream: widget.presenter.emailErrorStream,
-                          builder: (context, snapshot) {
-                            return TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Email',
-                                icon: Icon(Icons.email, color: Theme.of(context).primaryColorLight),
-                                errorText: snapshot.data?.isEmpty == true ? null : snapshot.data,
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              onChanged: widget.presenter.validateEmail,
-                            );
-                          }
+          return LoginContent(widget.presenter);
+        }
+      ),
+    );
+  }
+}
+
+class LoginContent extends StatelessWidget {
+  final LoginPresenter presenter;
+
+  LoginContent(this.presenter, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          LoginHeader(),
+          const Headline1(text: 'Login'),
+          Padding(
+            padding: const EdgeInsets.all(32),
+            child: Form(
+              child: Column(
+                children: [
+                  StreamBuilder<String>(
+                    stream: presenter.emailErrorStream,
+                    builder: (context, snapshot) {
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          icon: Icon(Icons.email, color: Theme.of(context).primaryColorLight),
+                          errorText: snapshot.data?.isEmpty == true ? null : snapshot.data,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8, bottom: 32),
-                          child: StreamBuilder<String>(
-                            stream: widget.presenter.passwordErrorStream,
-                            builder: (context, snapshot) {
-                              return TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Senha',
-                                  icon: Icon(Icons.lock, color: Theme.of(context).primaryColorLight),
-                                  errorText: snapshot.data?.isEmpty == true ? null : snapshot.data,
-                                ),
-                                obscureText: true,
-                                onChanged: widget.presenter.validatePassword,
-                              );
-                            }
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: presenter.validateEmail,
+                      );
+                    }
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 32),
+                    child: StreamBuilder<String>(
+                      stream: presenter.passwordErrorStream,
+                      builder: (context, snapshot) {
+                        return TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Senha',
+                            icon: Icon(Icons.lock, color: Theme.of(context).primaryColorLight),
+                            errorText: snapshot.data?.isEmpty == true ? null : snapshot.data,
                           ),
-                        ),
-                        StreamBuilder<bool>(
-                          stream: widget.presenter.isFormValidStream,
-                          builder: (context, snapshot) {
-                            return ElevatedButton(
-                              onPressed: snapshot.data == true ? widget.presenter.auth : null,
-                              child: Text('Entrar'.toUpperCase()),
-                            );
-                          }
-                        ),
-                        TextButton.icon(
-                          onPressed: () {},
-                          label: const Text('Criar conta'),
-                          icon: const Icon(Icons.person),
-                        ),
-                      ],
+                          obscureText: true,
+                          onChanged: presenter.validatePassword,
+                        );
+                      }
                     ),
                   ),
-                )
-              ],
+                  StreamBuilder<bool>(
+                    stream: presenter.isFormValidStream,
+                    builder: (context, snapshot) {
+                      return ElevatedButton(
+                        onPressed: snapshot.data == true ? presenter.auth : null,
+                        child: Text('Entrar'.toUpperCase()),
+                      );
+                    }
+                  ),
+                  TextButton.icon(
+                    onPressed: () {},
+                    label: const Text('Criar conta'),
+                    icon: const Icon(Icons.person),
+                  ),
+                ],
+              ),
             ),
-          );
-        }
+          )
+        ],
       ),
     );
   }
