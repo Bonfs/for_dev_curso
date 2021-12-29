@@ -1,33 +1,13 @@
-import 'dart:async';
-
 import 'package:faker/faker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:for_dev_curso/presentation/protocols/validation.dart';
+import 'package:for_dev_curso/presentation/presenters/presenters.dart';
+import 'package:for_dev_curso/presentation/protocols/protocols.dart';
 import 'stream_login_presenter_test.mocks.dart';
 
-class LoginState {
-  String emailError = '';
-}
-
-class StreamLoginPresenter {
-  final Validation validation;
-  final _controller = StreamController<LoginState>.broadcast();
-  final _state = LoginState();
-
-  Stream<String> get emailErrorStream => _controller.stream.map((state) => state.emailError);
-
-  StreamLoginPresenter({ required this.validation });
-  
-  void validateEmail(String email) {
-    _state.emailError = validation.validate(field: 'email', value: email);
-    _controller.add(_state);
-  }
-}
-
-@GenerateMocks([], customMocks: [MockSpec<Validation>(as: #ValidationSpy/* , returnNullOnMissingStub: true */)])
+@GenerateMocks([], customMocks: [MockSpec<Validation>(as: #ValidationSpy)])
 void main() {
   late ValidationSpy validation;
   late StreamLoginPresenter sut;
