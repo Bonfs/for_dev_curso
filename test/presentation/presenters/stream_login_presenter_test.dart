@@ -5,11 +5,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'package:for_dev_curso/presentation/protocols/validation.dart';
 import 'stream_login_presenter_test.mocks.dart';
-
-abstract class Validation {
-  String validate({required String field, required String value});
-}
 
 class LoginState {
   String emailError = '';
