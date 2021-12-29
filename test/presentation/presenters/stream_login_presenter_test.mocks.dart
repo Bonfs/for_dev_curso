@@ -19,10 +19,14 @@ import 'stream_login_presenter_test.dart' as _i2;
 ///
 /// See the documentation for Mockito's code generation for more information.
 class ValidationSpy extends _i1.Mock implements _i2.Validation {
+  ValidationSpy() {
+    _i1.throwOnMissingStub(this);
+  }
+
   @override
-  String? validate({String? field, String? value}) => (super.noSuchMethod(
-          Invocation.method(#validate, [], {#field: field, #value: value}))
-      as String?);
+  String validate({String? field, String? value}) => (super.noSuchMethod(
+      Invocation.method(#validate, [], {#field: field, #value: value}),
+      returnValue: '') as String);
   @override
   String toString() => super.toString();
 }

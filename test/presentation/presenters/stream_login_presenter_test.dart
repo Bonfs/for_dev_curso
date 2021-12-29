@@ -18,17 +18,19 @@ class LoginState {
 class StreamLoginPresenter {
   final Validation validation;
   final _controller = StreamController<LoginState>.broadcast();
+  final _state = LoginState();
 
   Stream<String> get emailErrorStream => _controller.stream.map((state) => state.emailError);
 
   StreamLoginPresenter({ required this.validation });
   
   void validateEmail(String email) {
-    validation.validate(field: 'email', value: email);
+    _state.emailError = validation.validate(field: 'email', value: email);
+    _controller.add(_state);
   }
 }
 
-@GenerateMocks([], customMocks: [MockSpec<Validation>(as: #ValidationSpy, returnNullOnMissingStub: true)])
+@GenerateMocks([], customMocks: [MockSpec<Validation>(as: #ValidationSpy/* , returnNullOnMissingStub: true */)])
 void main() {
   late ValidationSpy validation;
   late StreamLoginPresenter sut;
@@ -41,6 +43,9 @@ void main() {
   });
 
   test('Should call validation with correct email', () {
+     when(validation.validate(field: anyNamed('field'), value: anyNamed('value')))
+      .thenReturn('');
+
     sut.validateEmail(email);
 
     verify(validation.validate(field: 'email', value: email)).called(1);
