@@ -3,6 +3,7 @@
 > ## Regras
 1. ✅ Validar email com o Validation
 2. ✅ Notificar o emailErrorStream com o resultado do Validation
+2. ✅ Notificar o emailErrorStream com o uma String vazia  caso o Validation retorne erro
 3. ✅ Notificar o isFormValidStream após validar o email
 4. Validar senha com o Validation
 5. Notificar o passwordErrorStream com o resultado do Validation
@@ -16,3 +17,4 @@
 13. ⛔️ Levar o usuário pra tela de Enquetes em caso de sucesso
 14. Fechar todos os Streams no dispose
 15. ✅ Não notificar o emailErrorStream se o valor for igual ao último
+15. ✅ Não notificar o isValidFormStream se o valor for igual ao último
