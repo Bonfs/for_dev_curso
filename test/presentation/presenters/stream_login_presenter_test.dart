@@ -90,4 +90,15 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
   });
+
+  test('Should expect form validation succeeds', () async {
+    sut.emailErrorStream.listen(expectAsync1((error) => expect(error, '')));
+    sut.passwordErrorStream.listen(expectAsync1((error) => expect(error, '')));
+
+    expectLater(sut.isFormValidStream, emitsInOrder([false, true]));
+
+    sut.validateEmail(email);
+    await Future.delayed(Duration.zero);
+    sut.validatePassword(password);
+  });
 }
