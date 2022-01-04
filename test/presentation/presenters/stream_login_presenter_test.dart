@@ -161,4 +161,9 @@ void main() {
 
     await sut.auth();
   });
+
+  test('Should not emit after dispose', () async {
+    sut.dispose();
+    expect(sut.isClosed, true);
+  });
 }

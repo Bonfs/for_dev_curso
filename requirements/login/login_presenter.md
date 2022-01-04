@@ -15,7 +15,7 @@
 11. ✅ Notificar o mainErrorStream caso o Authentication retorne um DomainError
 12. ⛔️ Gravar o Account no cache em caso de sucesso
 13. ⛔️ Levar o usuário pra tela de Enquetes em caso de sucesso
-14. Fechar todos os Streams no dispose
+14. ✅ Fechar todos os Streams no dispose
 15. ✅ Não notificar o emailErrorStream se o valor for igual ao último
 15. ✅ Não notificar o isValidFormStream se o valor for igual ao último
 15. ✅ Não notificar o passwordErrorStream se o valor for igual ao último
