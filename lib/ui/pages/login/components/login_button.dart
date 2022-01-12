@@ -12,7 +12,10 @@ class LoginButton extends StatelessWidget {
       builder: (context, snapshot) {
         return ElevatedButton(
           onPressed: snapshot.data == true ? presenter.auth : null,
-          child: Text('Entrar'.toUpperCase()),
+          child: Text(
+            'Entrar'.toUpperCase(), 
+            style: const TextStyle(color: Colors.white),
+          ),
         );
       }
     );
