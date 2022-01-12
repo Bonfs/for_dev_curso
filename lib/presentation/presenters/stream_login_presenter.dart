@@ -18,7 +18,7 @@ class StreamLoginPresenter implements LoginPresenter {
   Stream<String> get passwordErrorStream => _controller.stream.map((state) => state.passwordError).distinct();
 
   @override
-  Stream<String> get mainErrorStream => _controller.stream.map((state) => state.mainError).distinct();
+  Stream<String> get mainErrorStream => _controller.stream.map((state) => state.mainError); // .distinct();
 
   @override
   Stream<bool> get isFormValidStream => _controller.stream.map((state) => state.isFormValid).distinct();
@@ -46,12 +46,15 @@ class StreamLoginPresenter implements LoginPresenter {
 
   @override
   Future<void> auth() async {
-    _state.isLoading = true;
-    _update();
-    try {
-      await authentication.auth(AuthenticationParams(email: _state.email, password: _state.password));
-    } on DomainError catch(error) {
-      _state.mainError = error.description;
+    if(!_state.isLoading) {
+      try {
+        _state.isLoading = true;
+        _update();
+        // await Future.delayed(const Duration(seconds: 1));
+        await authentication.auth(AuthenticationParams(email: _state.email, password: _state.password));
+      } on DomainError catch(error) {
+        _state.mainError = error.description;
+      }
     }
     _state.isLoading = false;
     _update();

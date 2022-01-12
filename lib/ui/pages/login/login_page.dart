@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,10 +17,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late StreamSubscription<bool> showDialogSub;
+  late StreamSubscription<String> errorSub;
+
   @override
   void dispose() {
     super.dispose();
     widget.presenter.dispose();
+    errorSub.cancel();
+    showDialogSub.cancel();
   }
 
   @override
@@ -26,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Builder(
         builder: (context) {
-          widget.presenter.isLoadingStream.listen((isLoading) {
+          showDialogSub = widget.presenter.isLoadingStream.listen((isLoading) {
             if(isLoading) {
               showLoading(context);
             } else {
@@ -34,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             }
           });
 
-          widget.presenter.mainErrorStream.listen((error) {
+          errorSub = widget.presenter.mainErrorStream.listen((error) {
             if (error != '') {
               showErrorMessage(context, error);
             }
