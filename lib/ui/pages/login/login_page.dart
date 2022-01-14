@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
-import 'components/components.dart';
-import 'login_presenter.dart';
+import './components/components.dart';
+import './login_presenter.dart';
 
 class LoginPage extends StatefulWidget {
   final LoginPresenter presenter;
@@ -61,38 +61,48 @@ class LoginContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          LoginHeader(),
-          const Headline1(text: 'Login'),
-          Padding(
-            padding: const EdgeInsets.all(32),
-            child: Provider(
-              create: (_) => presenter,
-              child: Form(
-                child: Column(
-                  children: [
-                    EmailInput(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 32),
-                      child: PasswordInput(),
-                    ),
-                    LoginButton(),
-                    TextButton.icon(
-                      onPressed: () {},
-                      label: const Text('Criar conta'),
-                      icon: const Icon(Icons.person),
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: () => _hideKeyboard(context),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            LoginHeader(),
+            const Headline1(text: 'Login'),
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Provider(
+                create: (_) => presenter,
+                child: Form(
+                  child: Column(
+                    children: [
+                      EmailInput(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8, bottom: 32),
+                        child: PasswordInput(),
+                      ),
+                      LoginButton(),
+                      TextButton.icon(
+                        onPressed: () {},
+                        label: const Text('Criar conta'),
+                        icon: const Icon(Icons.person),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  void _hideKeyboard(BuildContext context) {
+    final currentFocus = FocusScope.of(context);
+    if(!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }
 
