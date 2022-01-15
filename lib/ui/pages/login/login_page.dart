@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import './components/components.dart';
@@ -71,24 +70,21 @@ class LoginContent extends StatelessWidget {
             const Headline1(text: 'Login'),
             Padding(
               padding: const EdgeInsets.all(32),
-              child: Provider(
-                create: (_) => presenter,
-                child: Form(
-                  child: Column(
-                    children: [
-                      EmailInput(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, bottom: 32),
-                        child: PasswordInput(),
-                      ),
-                      LoginButton(),
-                      TextButton.icon(
-                        onPressed: () {},
-                        label: const Text('Criar conta'),
-                        icon: const Icon(Icons.person),
-                      ),
-                    ],
-                  ),
+              child: Form(
+                child: Column(
+                  children: [
+                    EmailInput(presenter),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 32),
+                      child: PasswordInput(presenter),
+                    ),
+                    LoginButton(presenter),
+                    TextButton.icon(
+                      onPressed: () {},
+                      label: const Text('Criar conta'),
+                      icon: const Icon(Icons.person),
+                    ),
+                  ],
                 ),
               ),
             )
