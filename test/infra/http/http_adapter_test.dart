@@ -57,7 +57,7 @@ void main() {
           'content-type': 'application/json',
           'accept': 'application/json'
         },
-        body: {'any_key': 'any_value'},
+        body: '{"any_key":"any_value"}',
         encoding: anyNamed('encoding')
       ));
     });
