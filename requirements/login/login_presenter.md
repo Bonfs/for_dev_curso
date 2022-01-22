@@ -19,4 +19,4 @@
 17. ✅  Não notificar o passwordErrorStream se o valor for igual ao último
 18. ✅  Gravar o Account no cache em caso de sucesso
 19. ✅  Notificar o mainErrorStream caso o SaveCurrentAccount retorne erro
-20. Levar o usuário para a tela de Enquetes em caso de sucesso
+20. ✅  Levar o usuário para a tela de Enquetes em caso de sucesso

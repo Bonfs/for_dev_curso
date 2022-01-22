@@ -1,38 +1,21 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../components/components.dart';
 import './components/components.dart';
 import './login_presenter.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   final LoginPresenter presenter;
 
   LoginPage(this.presenter, {Key? key}) : super(key: key);
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  late StreamSubscription<bool> showDialogSub;
-  late StreamSubscription<String> errorSub;
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.presenter.dispose();
-    errorSub.cancel();
-    showDialogSub.cancel();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Builder(
         builder: (context) {
-          showDialogSub = widget.presenter.isLoadingStream.listen((isLoading) {
+          presenter.isLoadingStream.listen((isLoading) {
             if(isLoading) {
               showLoading(context);
             } else {
@@ -40,13 +23,19 @@ class _LoginPageState extends State<LoginPage> {
             }
           });
 
-          errorSub = widget.presenter.mainErrorStream.listen((error) {
+          presenter.mainErrorStream.listen((error) {
             if (error != '') {
               showErrorMessage(context, error);
             }
           });
 
-          return LoginContent(widget.presenter);
+          presenter.navigateToStream.listen((page) {
+            if (page != '') {
+              Get.offAllNamed(page);
+            }
+          });
+
+          return LoginContent(presenter);
         }
       ),
     );
