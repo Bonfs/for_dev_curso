@@ -8,6 +8,7 @@ import '../protocols/protocols.dart';
 class GetXLoginPresenter extends GetxController implements LoginPresenter {
   final Validation validation;
   final Authentication authentication;
+  final SaveCurrentAccount saveCurrentAccount;
 
   String _email = '';
   String _password = '';
@@ -32,7 +33,11 @@ class GetXLoginPresenter extends GetxController implements LoginPresenter {
   @override
   Stream<bool> get isLoadingStream => _isLoading.stream;
 
-  GetXLoginPresenter({ required this.validation, required this.authentication });
+  GetXLoginPresenter({
+    required this.validation, 
+    required this.authentication, 
+    required this.saveCurrentAccount
+  });
   
   @override
   void validateEmail(String email) {
@@ -60,14 +65,13 @@ class GetXLoginPresenter extends GetxController implements LoginPresenter {
     if(!_isLoading.value) {
       try {
         _isLoading.value = true;
-        await authentication.auth(AuthenticationParams(email: _email, password: _password));
+        final accountEntity = 
+          await authentication.auth(AuthenticationParams(email: _email, password: _password));
+        await saveCurrentAccount.save(accountEntity);
       } on DomainError catch(error) {
         _mainError.value = error.description;
       }
     }
     _isLoading.value = false;
   }
-
-  
-  void dispose() {}
 }

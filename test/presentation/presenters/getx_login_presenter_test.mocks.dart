@@ -6,6 +6,7 @@ import 'dart:async' as _i5;
 
 import 'package:for_dev_curso/domain/entities/entities.dart' as _i2;
 import 'package:for_dev_curso/domain/usecases/authentication.dart' as _i4;
+import 'package:for_dev_curso/domain/usecases/save_current_account.dart' as _i6;
 import 'package:for_dev_curso/presentation/protocols/validation.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -50,6 +51,23 @@ class AuthenticationSpy extends _i1.Mock implements _i4.Authentication {
               returnValue:
                   Future<_i2.AccountEntity>.value(_FakeAccountEntity_0()))
           as _i5.Future<_i2.AccountEntity>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [SaveCurrentAccount].
+///
+/// See the documentation for Mockito's code generation for more information.
+class SaveCurrentAccountSpy extends _i1.Mock implements _i6.SaveCurrentAccount {
+  SaveCurrentAccountSpy() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<void> save(_i2.AccountEntity? entity) =>
+      (super.noSuchMethod(Invocation.method(#save, [entity]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
   @override
   String toString() => super.toString();
 }
