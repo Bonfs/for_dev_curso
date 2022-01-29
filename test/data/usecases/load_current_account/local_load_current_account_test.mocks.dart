@@ -27,10 +27,9 @@ class FetchSecureCacheStorageSpy extends _i1.Mock
   }
 
   @override
-  _i3.Future<void> fetchSecure(String? key) =>
+  _i3.Future<String> fetchSecure(String? key) =>
       (super.noSuchMethod(Invocation.method(#fetchSecure, [key]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+          returnValue: Future<String>.value('')) as _i3.Future<String>);
   @override
   String toString() => super.toString();
 }
