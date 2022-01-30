@@ -22,8 +22,8 @@ void main() {
 
   group('saveSecure', () {
     void mockSaveSecureError() {
-    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-      .thenThrow(Exception());
+      when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        .thenThrow(Exception());
     }
     
     test('Should call save secure with correct values', () async {
@@ -41,9 +41,18 @@ void main() {
   });
 
   group('fetchSecure', () {
+    PostExpectation mockFetchSecureCall() {
+      return when(secureStorage.read(key: anyNamed('key')));
+    }
+
     void mockFetchSecure() {
-      when(secureStorage.read(key: anyNamed('key')))
+      mockFetchSecureCall()
         .thenAnswer((_) async => value);
+    }
+
+    void mockFetchSecureError() {
+      mockFetchSecureCall()
+        .thenThrow(Exception());
     }
 
     setUp(() {
@@ -60,6 +69,14 @@ void main() {
       final fetchedValue = await sut.fetchSecure(key);
 
       expect(fetchedValue, value);
+    });
+
+    test('Should throw if fetch secure throws', () async {
+      mockFetchSecureError();
+
+      final future = sut.fetchSecure(key);
+
+      expect(future, throwsA(const TypeMatcher<Exception>()));
     });
   });
 }
