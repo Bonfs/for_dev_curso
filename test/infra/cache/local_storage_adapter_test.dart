@@ -41,17 +41,25 @@ void main() {
   });
 
   group('fetchSecure', () {
-    void mockSaveSecureError() {
-    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-      .thenThrow(Exception());
+    void mockFetchSecure() {
+      when(secureStorage.read(key: anyNamed('key')))
+        .thenAnswer((_) async => value);
     }
+
+    setUp(() {
+      mockFetchSecure();
+    });
     
     test('Should call fetch secure with correct value', () async {
-      when(secureStorage.read(key: key)).thenAnswer((_) async => 'any_value');
-      
       await sut.fetchSecure(key);
 
       verify(secureStorage.read(key: key));
+    });
+    
+    test('Should return correct value on success', () async {
+      final fetchedValue = await sut.fetchSecure(key);
+
+      expect(fetchedValue, value);
     });
   });
 }
