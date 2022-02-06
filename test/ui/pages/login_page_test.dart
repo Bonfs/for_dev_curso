@@ -58,7 +58,7 @@ void main() {
       initialRoute: '/login',
       getPages: [
         GetPage(name: '/login', page: () => Scaffold(body: LoginContent(presenter))),
-        GetPage(name: '/any_route', page: () => Scaffold(body: Text('fake page'))),
+        GetPage(name: '/any_route', page: () => const Scaffold(body: Text('fake page'))),
       ],
       // home: Scaffold(body: LoginContent(presenter))
     );
@@ -69,7 +69,14 @@ void main() {
     presenter = LoginPresenterSpy();
     initStreams();
     mockStreams();
-    final loginPage = MaterialApp(home: LoginPage(presenter));
+    final loginPage = GetMaterialApp(
+      initialRoute: '/login',
+      getPages: [
+        GetPage(name: '/login', page: () => LoginPage(presenter)),
+        GetPage(name: '/any_route', page: () => const Scaffold(body: Text('fake page'))),
+      ],
+      // home: Scaffold(body: LoginContent(presenter))
+    );
     await tester.pumpWidget(loginPage);
   }
 
@@ -215,7 +222,7 @@ void main() {
   });
 
   testWidgets('Should hide loading', (WidgetTester tester) async {
-    await loadLoginPage(tester);
+    await loadPage(tester);
 
     isLoadingController.add(true);
     await tester.pump();
@@ -245,7 +252,7 @@ void main() {
   });
 
   testWidgets('Should not change page', (WidgetTester tester) async {
-    await loadPage(tester);
+    await loadLoginPage(tester);
 
     navigateToController.add('');
     await tester.pump();

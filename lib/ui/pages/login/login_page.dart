@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Builder(
         builder: (context) {
-          presenter.isLoadingStream.listen((isLoading) {
+          presenter.isLoadingStream?.listen((isLoading) {
             if(isLoading) {
               showLoading(context);
             } else {
@@ -23,22 +23,60 @@ class LoginPage extends StatelessWidget {
             }
           });
 
-          presenter.mainErrorStream.listen((error) {
+          presenter.mainErrorStream?.listen((error) {
             if (error != '') {
               showErrorMessage(context, error);
             }
           });
 
-          presenter.navigateToStream.listen((page) {
+          presenter.navigateToStream?.listen((page) {
             if (page != '') {
               Get.offAllNamed(page);
             }
           });
 
-          return LoginContent(presenter);
+          return GestureDetector(
+            onTap: () => _hideKeyboard(context),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  LoginHeader(),
+                  const Headline1(text: 'Login'),
+                  Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Form(
+                      child: Column(
+                        children: [
+                          EmailInput(presenter),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8, bottom: 32),
+                            child: PasswordInput(presenter),
+                          ),
+                          LoginButton(presenter),
+                          TextButton.icon(
+                            onPressed: () {},
+                            label: const Text('Criar conta'),
+                            icon: const Icon(Icons.person),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
         }
       ),
     );
+  }
+
+  void _hideKeyboard(BuildContext context) {
+    final currentFocus = FocusScope.of(context);
+    if(!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }
 
