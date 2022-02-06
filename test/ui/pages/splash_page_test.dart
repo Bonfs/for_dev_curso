@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/route_manager.dart';
@@ -16,32 +18,51 @@ class SplashPage extends StatelessWidget {
     presenter.loadCurrentAccount();
     return Scaffold(
       appBar: AppBar(title: const Text('4Dev')),
-      body: const Center(
-        child: CircularProgressIndicator(),
+      body: Builder(
+        builder: (context) {
+          presenter.navigateToStream?.listen((page) {
+            if (page.isNotEmpty) {
+              Get.offAllNamed(page);
+            }
+          });
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       ),
     );
   }
 }
 
 abstract class SplashPresenter {
+  Stream<String>? get navigateToStream;
+
   Future<void> loadCurrentAccount();
 }
 
 @GenerateMocks([], customMocks: [MockSpec<SplashPresenter>(as: #SplashPresenterSpy)])
 void main() {
   late SplashPresenterSpy presenter;
+  late StreamController<String> navigateToController;
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = SplashPresenterSpy();
+    navigateToController = StreamController();    
+    when(presenter.navigateToStream).thenAnswer((_) => navigateToController.stream);
     await tester.pumpWidget(
       GetMaterialApp(
         initialRoute: '/',
         getPages: [
-          GetPage(name: '/', page: () => SplashPage(presenter: presenter))
+          GetPage(name: '/', page: () => SplashPage(presenter: presenter)),
+          GetPage(name: '/any_route', page: () => const Scaffold(body: Text('fake page'))),
         ],
       )
     );
   }
+
+  tearDown(() {
+    navigateToController.close();
+  });
 
   testWidgets('Should present spinner on page load', (WidgetTester tester) async {
     await loadPage(tester);
@@ -53,5 +74,24 @@ void main() {
     await loadPage(tester);
 
     verify(presenter.loadCurrentAccount()).called(1);
+  });
+
+  testWidgets('Should change page', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    navigateToController.add('/any_route');
+    await tester.pumpAndSettle();
+
+    expect(Get.currentRoute, '/any_route');
+    expect(find.text('fake page'), findsOneWidget);
+  });
+
+  testWidgets('Should not change page', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    navigateToController.add('');
+    await tester.pump();
+
+    expect(Get.currentRoute, '/');
   });
 }
