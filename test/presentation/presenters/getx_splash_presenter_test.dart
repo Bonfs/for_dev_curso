@@ -26,12 +26,24 @@ class GetXSplashPresenter implements SplashPresenter {
 
 @GenerateMocks([], customMocks: [MockSpec<LoadCurrentAccount>(as: #LoadCurrentAccountSpy)])
 void main() {
-  test('Should call LoadCurrentAccount', () async {
-    final token = faker.guid.guid();
-    final loadCurrentAccount = LoadCurrentAccountSpy();
-    final sut = GetXSplashPresenter(loadCurrentAccount: loadCurrentAccount);
-    when(loadCurrentAccount.load()).thenAnswer((_) async => AccountEntity(token));
+  late String token;
+  late LoadCurrentAccountSpy loadCurrentAccount;
+  late GetXSplashPresenter sut;
 
+  PostExpectation mockLoadCurrentAccountCall() => when(loadCurrentAccount.load());
+
+  void mockLoadCurrentAccount() {
+    mockLoadCurrentAccountCall().thenAnswer((_) async => AccountEntity(token));
+  }
+
+  setUp(() {
+    token = faker.guid.guid();
+    loadCurrentAccount = LoadCurrentAccountSpy();
+    sut = GetXSplashPresenter(loadCurrentAccount: loadCurrentAccount);
+    mockLoadCurrentAccount();
+  });
+
+  test('Should call LoadCurrentAccount', () async {
     await sut.checkAccount();
 
     verify(loadCurrentAccount.load()).called(1);
