@@ -2,10 +2,10 @@
 // in for_dev_curso/test/presentation/presenters/getx_splash_presenter_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
+import 'dart:async' as _i3;
 
-import 'package:for_dev_curso/domain/entities/entities.dart' as _i2;
-import 'package:for_dev_curso/domain/usecases/load_current_account.dart' as _i3;
+import 'package:for_dev_curso/domain/entities/entities.dart' as _i4;
+import 'package:for_dev_curso/domain/usecases/load_current_account.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -17,21 +17,19 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeAccountEntity_0 extends _i1.Fake implements _i2.AccountEntity {}
-
 /// A class which mocks [LoadCurrentAccount].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class LoadCurrentAccountSpy extends _i1.Mock implements _i3.LoadCurrentAccount {
+class LoadCurrentAccountSpy extends _i1.Mock implements _i2.LoadCurrentAccount {
   LoadCurrentAccountSpy() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.AccountEntity> load() => (super.noSuchMethod(
-          Invocation.method(#load, []),
-          returnValue: Future<_i2.AccountEntity>.value(_FakeAccountEntity_0()))
-      as _i4.Future<_i2.AccountEntity>);
+  _i3.Future<_i4.AccountEntity?> load() =>
+      (super.noSuchMethod(Invocation.method(#load, []),
+              returnValue: Future<_i4.AccountEntity?>.value())
+          as _i3.Future<_i4.AccountEntity?>);
   @override
   String toString() => super.toString();
 }
