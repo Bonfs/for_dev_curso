@@ -2,8 +2,6 @@
 // in for_dev_curso/test/ui/pages/login_page_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i3;
-
 import 'package:for_dev_curso/ui/pages/login/login_presenter.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -24,30 +22,6 @@ class LoginPresenterSpy extends _i1.Mock implements _i2.LoginPresenter {
     _i1.throwOnMissingStub(this);
   }
 
-  @override
-  _i3.Stream<String> get emailErrorStream =>
-      (super.noSuchMethod(Invocation.getter(#emailErrorStream),
-          returnValue: Stream<String>.empty()) as _i3.Stream<String>);
-  @override
-  _i3.Stream<String> get passwordErrorStream =>
-      (super.noSuchMethod(Invocation.getter(#passwordErrorStream),
-          returnValue: Stream<String>.empty()) as _i3.Stream<String>);
-  @override
-  _i3.Stream<String> get mainErrorStream =>
-      (super.noSuchMethod(Invocation.getter(#mainErrorStream),
-          returnValue: Stream<String>.empty()) as _i3.Stream<String>);
-  @override
-  _i3.Stream<String> get navigateToStream =>
-      (super.noSuchMethod(Invocation.getter(#navigateToStream),
-          returnValue: Stream<String>.empty()) as _i3.Stream<String>);
-  @override
-  _i3.Stream<bool> get isFormValidStream =>
-      (super.noSuchMethod(Invocation.getter(#isFormValidStream),
-          returnValue: Stream<bool>.empty()) as _i3.Stream<bool>);
-  @override
-  _i3.Stream<bool> get isLoadingStream =>
-      (super.noSuchMethod(Invocation.getter(#isLoadingStream),
-          returnValue: Stream<bool>.empty()) as _i3.Stream<bool>);
   @override
   void validateEmail(String? email) =>
       super.noSuchMethod(Invocation.method(#validateEmail, [email]),
