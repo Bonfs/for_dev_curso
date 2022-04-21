@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/i18n/i18n.dart';
 import '../../components/components.dart';
 import './components/components.dart';
 import './login_presenter.dart';
@@ -108,7 +109,7 @@ class LoginContent extends StatelessWidget {
                     LoginButton(presenter),
                     TextButton.icon(
                       onPressed: () {},
-                      label: const Text('Criar conta'),
+                      label: Text(R.strings.addAccount),
                       icon: const Icon(Icons.person),
                     ),
                   ],
